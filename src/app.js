@@ -4,6 +4,7 @@ import cors from 'cors'
 import PriceRecorder from './PriceRecorder.js'
 import router from './routes/index.js'
 import QuestDbClient from './QuestDbClient.js'
+import { getSurgePriceInBnb, getSurgeUsdPriceInBnb } from './price.js'
 
 // connect to QuestDB
 const client = new QuestDbClient({
@@ -20,9 +21,9 @@ const client = new QuestDbClient({
 client.connect()
 
 // start recording prices
-const surgePriceRecorder = new PriceRecorder(client, 'surge_price', 'surgePrice')
+const surgePriceRecorder = new PriceRecorder(client, 'surge_price', 'surgePrice', getSurgePriceInBnb)
 surgePriceRecorder.startRecording()
-const surgeUsdPriceRecorder = new PriceRecorder(client, 'surgeusd_price', 'surgeusdPrice')
+const surgeUsdPriceRecorder = new PriceRecorder(client, 'surgeusd_price', 'surgeusdPrice', getSurgeUsdPriceInBnb)
 surgeUsdPriceRecorder.startRecording()
 
 // configure and start rest api
