@@ -28,7 +28,16 @@ export async function getSurgePriceInBnb() {
  * Fetch the current BNB price in USD
  */
 export async function fetchBnbUsdPrice() {
-    const response = await fetch('https://getsur.ge/api/bnbPrice')
+    const url = `${NOMICS_API_ENDPOINT}/exchange-rates?key=${NOMICS_API_KEY}`
+
+    const response = await fetch(url)
     const json = await response.json()
-    return json.price
+
+    for (let currency of json) {
+        if (currency.currency !== NOMICS_CURRENCY_NAME) continue
+
+        return currency.rate
+    }
+
+    return 0
 }

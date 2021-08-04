@@ -20,6 +20,7 @@ services:
     environment:
       QUESTDB_HOST: questdb
       BSC_RPC_ENDPOINT: ${BSC_RPC_ENDPOINT}
+      NOMICS_API_KEY: ${NOMICS_API_KEY}
     restart: always
     depends_on:
       - questdb
