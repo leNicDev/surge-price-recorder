@@ -1,0 +1,25 @@
+version: '3'
+
+volumes:
+  questdb_data: {}  
+
+services:
+  questdb:
+    image: questdb/questdb:6.0.4
+    ports:
+      - 9000:9000
+    volumes:
+      - questdb_data:/root/.questdb/db
+    restart: always
+  price-recorder:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 127.0.0.1:3000:3000
+    environment:
+      QUESTDB_HOST: questdb
+      BSC_RPC_ENDPOINT: ${BSC_RPC_ENDPOINT}
+    restart: always
+    depends_on:
+      - questdb

@@ -1,0 +1,22 @@
+{
+  "name": "surge-price-recorder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "author": "leNicDev",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.1",
+    "web3": "^1.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
+  }
+}
