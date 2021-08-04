@@ -46,7 +46,7 @@ export async function fetchBnbUsdPrice() {
         if (currency.currency !== NOMICS_CURRENCY_NAME) continue
 
         cachedBnbPrice = currency.currency
-        cachedBnbPriceExpiration = Date.now() + 30000 // make cached bnb price expire in 30 seconds
+        cachedBnbPriceExpiration = Date.now() + 10000 // make cached bnb price expire in 30 seconds
 
         return currency.rate
     }
