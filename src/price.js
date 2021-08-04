@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 import Web3 from 'web3'
-import { SURGE_CONTRACT_ABI, SURGE_CONTRACT_ADDRESS, BSC_RPC_ENDPOINT, SURGE_USD_CONTRACT_ABI, SURGE_USD_CONTRACT_ADDRESS } from './constants.js'
+import { SURGE_CONTRACT_ABI, SURGE_CONTRACT_ADDRESS, BSC_RPC_ENDPOINT, SURGE_USD_CONTRACT_ABI, SURGE_USD_CONTRACT_ADDRESS, NOMICS_API_ENDPOINT, NOMICS_API_KEY } from './constants.js'
 
 const web3 = new Web3(new Web3.providers.HttpProvider(BSC_RPC_ENDPOINT))
 
