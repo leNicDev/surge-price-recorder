@@ -4,7 +4,7 @@ import cors from 'cors'
 import PriceRecorder from './PriceRecorder.js'
 import router from './routes/index.js'
 import QuestDbClient from './QuestDbClient.js'
-import { getSurgePriceInBnb, getSurgeUsdPriceInBnb } from './price.js'
+import { getSurgePriceInBnb, getSurgeUsdPriceInBnb, startBnbPriceUpdateLoop } from './price.js'
 
 // connect to QuestDB
 const client = new QuestDbClient({
@@ -20,11 +20,14 @@ const client = new QuestDbClient({
 })
 client.connect()
 
-// start recording prices
-const surgePriceRecorder = new PriceRecorder(client, 'surge_price', 'surgePrice', getSurgePriceInBnb)
-surgePriceRecorder.startRecording()
-const surgeUsdPriceRecorder = new PriceRecorder(client, 'surgeusd_price', 'surgeusdPrice', getSurgeUsdPriceInBnb)
-surgeUsdPriceRecorder.startRecording()
+// Start updating the BNB price and then start recording prices
+startBnbPriceUpdateLoop().then(() => {
+    const surgePriceRecorder = new PriceRecorder(client, 'surge_price', 'surgePrice', getSurgePriceInBnb)
+    surgePriceRecorder.startRecording()
+
+    const surgeUsdPriceRecorder = new PriceRecorder(client, 'surgeusd_price', 'surgeusdPrice', getSurgeUsdPriceInBnb)
+    surgeUsdPriceRecorder.startRecording()
+})
 
 // configure and start rest api
 const app = express()

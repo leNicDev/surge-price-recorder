@@ -1,4 +1,4 @@
-import { fetchBnbUsdPrice } from "./price.js"
+import { getBnbPrice } from "./price.js"
 
 export default class PriceRecorder {
     constructor(dbClient, tableName, surgeKey, getSurgePriceFn) {
@@ -24,7 +24,7 @@ export default class PriceRecorder {
 
     async record() {
         const surgeBnbPrice = await this.getSurgePriceFn()
-        const bnbUsdPrice = await fetchBnbUsdPrice()
+        const bnbUsdPrice = getBnbPrice()
 
         await this.dbClient.insert(`${this.tableName} ${this.surgeKey}=${surgeBnbPrice},bnbPrice=${bnbUsdPrice}`)
     }

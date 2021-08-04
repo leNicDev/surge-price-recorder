@@ -4,8 +4,7 @@ import { SURGE_CONTRACT_ABI, SURGE_CONTRACT_ADDRESS, BSC_RPC_ENDPOINT, SURGE_USD
 
 const web3 = new Web3(new Web3.providers.HttpProvider(BSC_RPC_ENDPOINT))
 
-let cachedBnbPrice = null
-let cachedBnbPriceExpiration = Date.now()
+export let bnbPrice = 0
 
 /**
  * Get the current price of Surge in BNB
@@ -31,25 +30,21 @@ export async function getSurgePriceInBnb() {
  * Fetch the current BNB price in USD
  */
 export async function fetchBnbUsdPrice() {
-    // how real gangsters do caching
-    if (cachedBnbPrice && cachedBnbPriceExpiration < Date.now()) {
-        return cachedBnbPrice
-    }
-
-    const url = `${NOMICS_API_ENDPOINT}/exchange-rates?key=${NOMICS_API_KEY}`
+    const url = 'https://api.binance.com/api/v3/avgPrice?symbol=BNBBUSD'
 
     const response = await fetch(url)
-    console.log('Response', response)
     const json = await response.json()
 
-    for (let currency of json) {
-        if (currency.currency !== NOMICS_CURRENCY_NAME) continue
+    return json.price
+}
 
-        cachedBnbPrice = currency.currency
-        cachedBnbPriceExpiration = Date.now() + 10000 // make cached bnb price expire in 30 seconds
+export async function startBnbPriceUpdateLoop() {
+    bnbPrice = await fetchBnbUsdPrice()
+    setInterval(async () => {
+        bnbPrice = await fetchBnbUsdPrice()
+    }, 10000)
+}
 
-        return currency.rate
-    }
-
-    return 0
+export function getBnbPrice() {
+    return bnbPrice
 }
