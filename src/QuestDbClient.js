@@ -32,12 +32,8 @@ export default class QuestDbClient {
         })
     }
 
-    async query(queryString, options) {
-        let url = `${this.options.query.protocol}://${this.options.query.host}:${this.options.query.port}/exec?query=${encodeURIComponent(queryString)}`
-        if (options?.limit !== undefined && !isNaN(Number(options?.limit))) {
-            url += `&limit=${encodeURIComponent(options.limit)}`
-        }
-        
+    async query(queryString) {
+        const url = `${this.options.query.protocol}://${this.options.query.host}:${this.options.query.port}/exec?query=${encodeURIComponent(queryString)}`        
         const response = await fetch(url)
         const json = await response.json()
         return json
