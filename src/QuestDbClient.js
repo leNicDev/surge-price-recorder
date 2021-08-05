@@ -33,7 +33,7 @@ export default class QuestDbClient {
     }
 
     async query(queryString, options) {
-        let url = `${this.options.query.protocol}://${this.options.query.host}:${this.options.query.port}?query=${encodeURIComponent(queryString)}`
+        let url = `${this.options.query.protocol}://${this.options.query.host}:${this.options.query.port}/exec?query=${encodeURIComponent(queryString)}`
         if (options?.limit !== undefined && !isNaN(Number(options?.limit))) {
             url += `&limit=${encodeURIComponent(options.limit)}`
         }
