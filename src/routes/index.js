@@ -10,7 +10,7 @@ router.get('/surge', async (req, res) => {
 
 router.get('/surgeusd', async (req, res) => {
     const data = await questDbClient.query('SELECT * FROM surgeusd_price')
-    res.json(data)
+    res.json({ columns: data.columns, dataset: data.dataset, count: data.count })
 })
 
 export default router
