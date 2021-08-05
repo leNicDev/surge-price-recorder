@@ -7,7 +7,7 @@ import QuestDbClient from './QuestDbClient.js'
 import { getSurgePriceInBnb, getSurgeUsdPriceInBnb, startBnbPriceUpdateLoop } from './price.js'
 
 // connect to QuestDB
-const client = new QuestDbClient({
+export const questDbClient = new QuestDbClient({
     ingest: {
         host: process.env.QUESTDB_HOST || 'localhost',
         port: Number(process.env.QUESTDB_INFLUX_PORT) || 9009,
@@ -18,14 +18,14 @@ const client = new QuestDbClient({
         protocol: Number(process.env.QUESTDB_REST_PORT) || 9000,
     },
 })
-client.connect()
+questDbClient.connect()
 
 // Start updating the BNB price and then start recording prices
 startBnbPriceUpdateLoop().then(() => {
-    const surgePriceRecorder = new PriceRecorder(client, 'surge_price', 'surgePrice', getSurgePriceInBnb)
+    const surgePriceRecorder = new PriceRecorder(questDbClient, 'surge_price', 'surgePrice', getSurgePriceInBnb)
     surgePriceRecorder.startRecording()
 
-    const surgeUsdPriceRecorder = new PriceRecorder(client, 'surgeusd_price', 'surgeusdPrice', getSurgeUsdPriceInBnb)
+    const surgeUsdPriceRecorder = new PriceRecorder(questDbClient, 'surgeusd_price', 'surgeusdPrice', getSurgeUsdPriceInBnb)
     surgeUsdPriceRecorder.startRecording()
 })
 
