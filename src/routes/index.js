@@ -13,7 +13,7 @@ router.get('/surge', async (req, res) => {
 
 router.get('/surgeusd', async (req, res) => {
     const interval = parseInterval(req.query.interval)
-    const query = `SELECT avg(surgePrice) AS price, timestamp FROM surgeusd_price SAMPLE BY ${interval} ALIGN TO CALENDAR`
+    const query = `SELECT avg(surgeusdPrice) AS price, timestamp FROM surgeusd_price SAMPLE BY ${interval} ALIGN TO CALENDAR`
 
     const data = await questDbClient.query(query)
     res.json({ columns: data.columns, dataset: data.dataset, count: data.count })
