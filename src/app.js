@@ -14,8 +14,8 @@ export const questDbClient = new QuestDbClient({
     },
     query: {
         protocol: process.env.QUESTDB_PROTOCOL || 'http',
-        protocol: process.env.QUESTDB_HOST || 'localhost',
-        protocol: Number(process.env.QUESTDB_REST_PORT) || 9000,
+        host: process.env.QUESTDB_HOST || 'localhost',
+        port: Number(process.env.QUESTDB_REST_PORT) || 9000,
     },
 })
 questDbClient.connect()
