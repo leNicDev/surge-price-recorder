@@ -4,13 +4,32 @@ import { questDbClient } from '../app.js'
 const router = express.Router()
 
 router.get('/surge', async (req, res) => {
-    const data = await questDbClient.query('SELECT avg(surgePrice) AS price, timestamp FROM surge_price SAMPLE BY 1d ALIGN TO CALENDAR')
+    const interval = parseInterval(req.query.interval)
+    const query = `SELECT avg(surgePrice) AS price, timestamp FROM surge_price SAMPLE BY ${interval} ALIGN TO CALENDAR`
+
+    const data = await questDbClient.query(query)
     res.json({ columns: data.columns, dataset: data.dataset, count: data.count })
 })
 
 router.get('/surgeusd', async (req, res) => {
-    const data = await questDbClient.query('SELECT avg(surgeusdPrice) FROM surgeusd_price SAMPLE BY 1d ALIGN TO CALENDAR')
+    const interval = parseInterval(req.query.interval)
+    const query = `SELECT avg(surgePrice) AS price, timestamp FROM surgeusd_price SAMPLE BY ${interval} ALIGN TO CALENDAR`
+
+    const data = await questDbClient.query(query)
     res.json({ columns: data.columns, dataset: data.dataset, count: data.count })
 })
+
+function parseInterval(interval) {
+    if (!interval || typeof interval !== 'string') return '1d'
+
+    switch (interval.toLowerCase()) {
+        case '1m': return '1m';
+        case '1h': return '1h';
+        case '1d': return '1d';
+        case '1w': return '1w';
+        case '1mo': return '30d';
+        default: return '1d';
+    }
+}
 
 export default router
