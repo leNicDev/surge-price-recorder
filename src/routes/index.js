@@ -47,6 +47,20 @@ router.get('/surgeusd/changePercentage', async (req, res) => {
     res.json({ change: data.dataset[0][0] })
 })
 
+router.get('/surgeeth/change', async (req, res) => {
+    const query = `SELECT (cast(last(surgeethPrice) AS DOUBLE) + -cast(first(surgeethPrice) AS DOUBLE)) AS change FROM surgeeth_price WHERE timestamp >= dateadd('d', -1, now())`
+
+    const data = await questDbClient.query(query)
+    res.json({ change: data.dataset[0][0] })
+})
+
+router.get('/surgeeth/changePercentage', async (req, res) => {
+    const query = `SELECT ((cast(last(surgeethPrice) AS DOUBLE) - cast(first(surgeethPrice) AS DOUBLE)) / cast(first(surgeethPrice) AS DOUBLE)) AS change FROM surgeeth_price WHERE timestamp >= dateadd('d', -1, now())`
+
+    const data = await questDbClient.query(query)
+    res.json({ change: data.dataset[0][0] })
+})
+
 function parseInterval(interval) {
     if (!interval || typeof interval !== 'string') return '1d'
 
