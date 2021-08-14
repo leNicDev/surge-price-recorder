@@ -1,6 +1,6 @@
 import express from 'express'
 import { questDbClient } from '../app.js'
-import {Contracts, getContractByAddress} from "../contacts";
+import {Contracts, getContractByAddress} from "../contracts";
 
 const router = express.Router()
 
