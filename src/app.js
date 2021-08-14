@@ -5,7 +5,7 @@ import PriceRecorder from './PriceRecorder.js'
 import router from './routes/index.js'
 import QuestDbClient from './QuestDbClient.js'
 import { getSurgeEthPriceInBnb, getSurgePriceInBnb, getSurgeUsdPriceInBnb, startBnbPriceUpdateLoop } from './price.js'
-import {Contracts} from "./contracts";
+import {Contracts} from "./contracts.js";
 
 // connect to QuestDB
 export const questDbClient = new QuestDbClient({
