@@ -1,10 +1,9 @@
 import { getBnbPrice } from "./price.js"
 
 export default class PriceRecorder {
-    constructor(dbClient, tableName, surgeKey, getSurgePriceFn) {
+    constructor(dbClient, address, getSurgePriceFn) {
         this.dbClient = dbClient
-        this.tableName = tableName
-        this.surgeKey = surgeKey
+        this.address = address
         this.getSurgePriceFn = getSurgePriceFn
         this.interval = undefined
     }
@@ -26,6 +25,6 @@ export default class PriceRecorder {
         const surgeBnbPrice = await this.getSurgePriceFn()
         const bnbUsdPrice = getBnbPrice()
 
-        await this.dbClient.insert(`${this.tableName} ${this.surgeKey}=${surgeBnbPrice},bnbPrice=${bnbUsdPrice}`)
+        await this.dbClient.insert(`${this.address} price=${surgeBnbPrice},bnbPrice=${bnbUsdPrice}`)
     }
 }
