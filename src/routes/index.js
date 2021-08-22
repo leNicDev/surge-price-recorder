@@ -14,7 +14,9 @@ router.get('/:contractAddress', async (req, res) => {
 
     const interval = parseInterval(req.query.interval)
     const query = `SELECT avg(price) AS price, timestamp FROM ${contract.address} SAMPLE BY ${interval} ALIGN TO CALENDAR`
-    const data = await questDbClient.query(query)
+
+    let data = await questDbClient.query(query)
+    data.dataset = data.dataset.map(point => [point[0], new Date(point[1]).getTime()])
 
     res.json({ columns: data.columns, dataset: data.dataset, count: data.count })
 })
@@ -23,7 +25,9 @@ router.get('/surge', async (req, res) => {
     const interval = parseInterval(req.query.interval)
     const query = `SELECT avg(price) AS price, timestamp FROM ${Contracts.SurgeBnb.address} SAMPLE BY ${interval} ALIGN TO CALENDAR`
 
-    const data = await questDbClient.query(query)
+    let data = await questDbClient.query(query)
+    data.dataset = data.dataset.map(point => [point[0], new Date(point[1]).getTime()])
+
     res.json({ columns: data.columns, dataset: data.dataset, count: data.count })
 })
 
@@ -45,7 +49,9 @@ router.get('/surgeusd', async (req, res) => {
     const interval = parseInterval(req.query.interval)
     const query = `SELECT avg(price) AS price, timestamp FROM ${Contracts.SurgeUsd.address} SAMPLE BY ${interval} ALIGN TO CALENDAR`
 
-    const data = await questDbClient.query(query)
+    let data = await questDbClient.query(query)
+    data.dataset = data.dataset.map(point => [point[0], new Date(point[1]).getTime()])
+
     res.json({ columns: data.columns, dataset: data.dataset, count: data.count })
 })
 
